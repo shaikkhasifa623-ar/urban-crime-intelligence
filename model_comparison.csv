@@ -1,0 +1,4 @@
+Model,Accuracy (%),Precision,Recall,F1-score
+Random Forest,94.55,0.94,0.952,0.946
+Gradient Boosting,93.94,0.951,0.928,0.939
+Decision Tree,91.52,0.906,0.928,0.917

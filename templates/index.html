@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Urban Crime Intelligence</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-icon">⌁</span><div><strong>URBAN<span>IQ</span></strong><small>CRIME INTELLIGENCE</small></div></div>
+      <nav>
+        <a class="nav-link active" href="#overview">▦ <span>Overview</span></a>
+        <a class="nav-link" href="#analytics">◫ <span>Crime analytics</span></a>
+        <a class="nav-link" href="#predictor">✳ <span>ML predictor</span></a>
+      </nav>
+      <div class="filter-box">
+        <div class="section-label">DATA FILTERS</div>
+        <label for="districtFilter">Police district</label>
+        <select id="districtFilter"><option value="All">All districts</option></select>
+        <label for="categoryFilter">Incident category</label>
+        <select id="categoryFilter"><option value="All">All categories</option></select>
+        <label>Year range</label>
+        <div class="year-row"><select id="yearFrom"></select><span>to</span><select id="yearTo"></select></div>
+        <button id="applyFilters" class="btn btn-primary full">Apply filters</button>
+        <button id="resetFilters" class="btn btn-quiet full">Reset filters</button>
+      </div>
+      <div class="sidebar-foot"><span class="status-dot"></span> Backend connected <small>Flask API · Local server</small></div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div><span class="eyebrow">OVERVIEW / DASHBOARD</span><h1>Urban Crime Intelligence</h1><p>Historical crime patterns and machine-learning insights.</p></div>
+        <div class="top-right"><span class="live-pill"><i></i> LIVE DATA</span><div class="avatar">UI</div></div>
+      </header>
+
+      <section id="overview" class="hero">
+        <div class="hero-copy"><div class="hero-tag">DATA-DRIVEN PUBLIC SAFETY RESEARCH</div><h2>Understand patterns.<br><span>Explore the data.</span></h2><p>Explore historical incident reports by category, time, and police district. Use the ML lab to test an experimental category estimate.</p><a href="#analytics" class="hero-link">Explore analytics <b>↗</b></a></div>
+        <div class="hero-art"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="hero-shield">⌖</div><div class="art-chip chip-a">◈ &nbsp; Pattern analysis</div><div class="art-chip chip-b">✳ &nbsp; ML insights</div></div>
+      </section>
+
+      <section class="metrics" id="metrics">
+        <article class="metric-card"><div class="metric-top"><span>Total reports</span><span class="metric-icon pink">▤</span></div><strong id="totalMetric">—</strong><small>Records matching filters</small></article>
+        <article class="metric-card"><div class="metric-top"><span>Crime categories</span><span class="metric-icon purple">◉</span></div><strong id="categoryMetric">—</strong><small>Categories in dataset</small></article>
+        <article class="metric-card"><div class="metric-top"><span>Police districts</span><span class="metric-icon blue">⌖</span></div><strong id="districtMetric">—</strong><small>Districts represented</small></article>
+        <article class="metric-card"><div class="metric-top"><span>Most reported</span><span class="metric-icon gold">↗</span></div><strong class="metric-word" id="topMetric">—</strong><small id="topCount">Top historical category</small></article>
+      </section>
+
+      <section id="analytics" class="section-block">
+        <div class="section-heading"><div><span class="eyebrow">EXPLORE THE DATA</span><h2>Crime analytics</h2></div><span class="section-badge">HISTORICAL REPORTS</span></div>
+        <div class="chart-grid">
+          <article class="panel chart-panel"><div class="panel-heading"><div><h3>Most reported categories</h3><p>Top 10 incident types in the filtered records</p></div><span class="panel-symbol">▥</span></div><div id="categoryChart" class="chart"></div></article>
+          <article class="panel chart-panel"><div class="panel-heading"><div><h3>Reports by day</h3><p>Weekly distribution</p></div><span class="panel-symbol">◷</span></div><div id="dayChart" class="chart"></div></article>
+          <article class="panel chart-panel"><div class="panel-heading"><div><h3>Reports by hour</h3><p>Time-of-day pattern (0–23)</p></div><span class="panel-symbol">⌁</span></div><div id="hourChart" class="chart"></div></article>
+          <article class="panel chart-panel"><div class="panel-heading"><div><h3>Reports by month</h3><p>Seasonal distribution across records</p></div><span class="panel-symbol">▦</span></div><div id="monthChart" class="chart"></div></article>
+        </div>
+      </section>
+
+      <section class="section-block predictor-section" id="predictor">
+        <div class="section-heading"><div><span class="eyebrow">MACHINE LEARNING LAB</span><h2>Crime category estimator</h2><p class="section-subtitle">Train a Random Forest model on historical records and test a combination of time and district features.</p></div><span class="section-badge purple-badge">RANDOM FOREST</span></div>
+        <div class="predictor-grid">
+          <article class="panel predictor-form">
+            <div class="panel-heading"><div><h3>Configure scenario</h3><p>Choose the inputs for an experimental estimate</p></div><span class="panel-symbol">✳</span></div>
+            <div class="form-grid">
+              <div class="form-field"><label for="predDistrict">Police district</label><select id="predDistrict"></select></div>
+              <div class="form-field"><label for="predDay">Day of week</label><select id="predDay"><option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option><option>Saturday</option><option>Sunday</option></select></div>
+              <div class="form-field"><label for="predHour">Hour of day</label><select id="predHour"></select></div>
+              <div class="form-field"><label for="predMonth">Month</label><select id="predMonth"><option value="1">January</option><option value="2">February</option><option value="3">March</option><option value="4">April</option><option value="5">May</option><option value="6" selected>June</option><option value="7">July</option><option value="8">August</option><option value="9">September</option><option value="10">October</option><option value="11">November</option><option value="12">December</option></select></div>
+            </div>
+            <button id="predictBtn" class="btn btn-primary predict-btn">Generate estimate <span>→</span></button>
+            <div id="modelStatus" class="model-status"><span class="spinner"></span> Checking model status…</div>
+          </article>
+          <article class="panel prediction-result" id="predictionResult">
+            <div class="result-empty"><div class="result-orb">✳</div><h3>Your estimate will appear here</h3><p>Train or load the model, choose a scenario, then click “Generate estimate”.</p></div>
+          </article>
+        </div>
+        <div class="disclaimer">⚠ <strong>Research use only:</strong> This model estimates a reported category from historical San Francisco data. It does not predict whether a crime will occur, identify people, or support enforcement decisions. Model confidence is not a real-world probability.</div>
+      </section>
+
+      <footer><span>URBAN<span class="footer-accent">IQ</span> · Student ML project</span><span>Flask backend · HTML/CSS/JS frontend</span></footer>
+    </main>
+  </div>
+  <div id="toast" class="toast"></div>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+crime_model.joblib
+
+test (1).csv
+train.csv
